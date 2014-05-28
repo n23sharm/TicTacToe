@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="x_color">#0da3dd</color>
+    <color name="o_color">#ffa00F</color>
+    <color name="separator_color">#999999</color>
+    <color name="status_color">#777777</color>
+    <color name="rematch_button_text_color">#777777</color>
+    <color name="rematch_button_border_color">#999999</color>
+    <color name="rematch_button_fill_color">#dddddd</color>
+    <color name="status_bar_default_color">#f5f5f5</color>
+    <color name="status_bar_tie_color">#cce6ff</color>
+    <color name="status_bar_win_color">#cdeb8b</color>
+    <color name="status_bar_lose_color">#ffcccc</color>
+    <color name="splash_background">#f5f5f5</color>
+    <color name="splash_text_color">#777777</color>
+    <color name="blue_button_fill_color">#daf1fa</color>
+    <color name="blue_button_selected_fill_color">#c4e9f7</color>
+</resources>
