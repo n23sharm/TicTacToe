@@ -50,9 +50,19 @@ public class GameActivity extends Activity implements GameListener {
 	
 	public void onRematchClicked(View view) {
 		mIsGameOver = false;
+		resetUI();
+		mGameManager.startGame(mIsComputerFirst);
+	}
+	
+	private void resetUI() {
 		mRematchButton.setVisibility(View.GONE);
 		mStatusBar.setBackgroundColor(getResources().getColor(R.color.status_bar_default_color));
-		mGameManager.startGame(mIsComputerFirst);
+		
+		for (int i = 0; i < mCells.length; ++i) {
+			for (int j = 0; j < mCells[0].length; ++j) {
+				mCells[i][j].setBackgroundColor(getResources().getColor(R.color.default_tile_background));
+			}
+		}
 	}
 	
 	public void cellTapped(View view) {
@@ -116,7 +126,7 @@ public class GameActivity extends Activity implements GameListener {
 	}
 
 	@Override
-	public void onGameOver(Player winner) {
+	public void onGameOver(Player winner, boolean[][] winningBoard) {
 		mIsGameOver = true;
 		mRematchButton.setVisibility(View.VISIBLE);
 
@@ -132,6 +142,14 @@ public class GameActivity extends Activity implements GameListener {
 		} else {
 			statusText = getString(R.string.tie);
 			backgroundColorResource = R.color.status_bar_tie_color;
+		}
+		
+		for (int i = 0; i < mCells.length; ++i) {
+			for (int j = 0; j < mCells[0].length; ++j) {
+				if (winningBoard[i][j]) {
+					mCells[i][j].setBackgroundColor(getResources().getColor(R.color.winning_tile_background));
+				}
+			}
 		}
 		
 		mStatusText.setText(statusText);

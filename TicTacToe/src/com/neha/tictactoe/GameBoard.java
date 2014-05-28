@@ -4,6 +4,7 @@ public class GameBoard {
 	public static final int SIZE = 3;
 
 	private Player[][] mBoard;
+	private boolean[][] mWinnerBoard;
 	
 	public GameBoard() {
 		this(null);
@@ -11,9 +12,11 @@ public class GameBoard {
 	
 	public GameBoard(GameBoard gameboard) {
 		mBoard = new Player[SIZE][SIZE];
+		mWinnerBoard = new boolean[SIZE][SIZE];
 		for (int i = 0; i < mBoard.length; ++i) {
 			for (int j = 0; j < mBoard[0].length; ++j) {
 				mBoard[i][j] = gameboard != null ? gameboard.getBoard()[i][j] : Player.EMPTY;
+				mWinnerBoard[i][j] = false;
 			}
 		}
 	}
@@ -21,11 +24,16 @@ public class GameBoard {
 	public Player[][] getBoard() {
 		return mBoard;
 	}
+	
+	public boolean[][] getWinningBoard() {
+		return mWinnerBoard;
+	}
 
 	public void clearBoard() {
 		for (int i = 0; i < mBoard.length; ++i) {
 			for (int j = 0; j < mBoard[0].length; ++j) {
 				mBoard[i][j] = Player.EMPTY;
+				mWinnerBoard[i][j] = false;
 			}
 		}
 	}
@@ -46,57 +54,87 @@ public class GameBoard {
 	}
 	
 	public Player getWinner() {
+		return getWinner(false);
+	}
+	
+	public Player getWinner(boolean populateWinnerBoard) {
 		Player player = Player.EMPTY;
 		
 		// check rows
-		for (int i = 0; i < SIZE; ++i) {
-			player = mBoard[i][0];
-			for (int j = 1; j < SIZE; ++j) {
-				if (mBoard[i][j] != player) {
+		for (int row = 0; row < SIZE; ++row) {
+			player = mBoard[row][0];
+			for (int column = 0; column < SIZE; ++column) {
+				if (mBoard[row][column] != player) {
 					player = Player.EMPTY;
 					break;
 				}
 			}
+
 			if (player != Player.EMPTY) {
+				if (populateWinnerBoard) {
+					for (int column = 0; column < SIZE; ++column) {
+						mWinnerBoard[row][column] = true;
+					}
+				}
+				
 				return player;
 			}
 		}
 		
 		// check columns
-		for (int i = 0; i < SIZE; ++i) {
-			player = mBoard[0][i];
-			for (int j = 0; j < SIZE; ++j) {
-				if (mBoard[j][i] != player) {
+		for (int column = 0; column < SIZE; ++column) {
+			player = mBoard[0][column];
+			for (int row = 0; row < SIZE; ++row) {
+				if (mBoard[row][column] != player) {
 					player = Player.EMPTY;
 					break;
 				}
 			}
+
 			if (player != Player.EMPTY) {
+				if (populateWinnerBoard) {
+					for (int row = 0; row < SIZE; ++row) {
+						mWinnerBoard[row][column] = true;
+					}
+				}
+				
 				return player;
 			}
 		}
 		
 		// check left-right diagonal
 		player = mBoard[0][0];
-		for (int i = 0; i < SIZE; ++i) {
-			if (mBoard[i][i] != player) {
+		for (int row = 0, column = 0; row < SIZE && column < SIZE; ++row, ++column) {
+			if (mBoard[row][column] != player) {
 				player = Player.EMPTY;
 				break;
 			}
 		}
 		if (player != Player.EMPTY) {
+			if (populateWinnerBoard) {
+				for (int row = 0, column = 0; row < SIZE && column < SIZE; ++row, ++column) {
+					mWinnerBoard[row][column] = true;
+				}
+			}
+			
 			return player;
 		}
 		
 		// check right-left diagonal
 		player = mBoard[SIZE - 1][0];
-		for (int i = SIZE - 1, j = 0; i >= 0 && j < SIZE; --i, ++j) {
-			if (mBoard[i][j] != player) {
+		for (int row = SIZE - 1, column = 0; row >= 0 && column < SIZE; --row, ++column) {
+			if (mBoard[row][column] != player) {
 				player = Player.EMPTY;
 				break;
 			}
 		}
 			
+		if (player != Player.EMPTY && populateWinnerBoard) {
+			for (int row = SIZE - 1, column = 0; row >= 0 && column < SIZE; --row, ++column) {
+				mWinnerBoard[row][column] = true;
+			}
+		}
+		
 		return player;
 	}
 	

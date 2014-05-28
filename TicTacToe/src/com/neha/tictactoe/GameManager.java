@@ -68,8 +68,8 @@ public class GameManager {
 		
 		if (mGameBoard.isGameOver()) {
 			if (mGameListener != null) {
-				Player winner = mGameBoard.getWinner();
-				mGameListener.onGameOver(winner);
+				Player winner = mGameBoard.getWinner(true);
+				mGameListener.onGameOver(winner, mGameBoard.getWinningBoard());
 			}
 		} else {
 			updateCurrentPlayer(mComputerPlayer);
@@ -108,8 +108,8 @@ public class GameManager {
 					
 					if (mGameBoard.isGameOver()) {
 						if (mGameListener != null) {
-							Player winner = mGameBoard.getWinner();
-							mGameListener.onGameOver(winner);
+							Player winner = mGameBoard.getWinner(true);
+							mGameListener.onGameOver(winner, mGameBoard.getWinningBoard());
 						}
 					} else {
 						updateCurrentPlayer(mHumanPlayer);
